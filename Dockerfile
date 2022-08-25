@@ -64,7 +64,7 @@ RUN rm -rf temp
 
 # Copy rhpc example files to an examples folder in a project directory:
 WORKDIR /project
-RUN cp /root/sfw/repast_hpc-${RHPC_VERSION}/bin/ /project/examples/
+RUN cp -v -T -r /root/sfw/repast_hpc-${RHPC_VERSION}/bin /project/examples
 
 # Declare start-up command:
 CMD ["/bin/sh"]
