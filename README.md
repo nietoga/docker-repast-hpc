@@ -9,7 +9,7 @@ The current Repast HPC version supported by the docker images is 2.3.1; whereas 
 ### To pull (download) any of the images:
 Make sure you have Docker Engine on your machine and run one of the following commands.
 
-```dockerfile
+```powershell
 # Ubuntu.22.10-powered image:
 docker pull ghcr.io/w-mohammed/repast-hpc:2.3.1-ubuntu22.10
 # alpine3.16.2-powered image:
@@ -21,7 +21,7 @@ This image is primarily intended as a development environment that the user can 
 - navigate to your projects working directory (where your model files are or are to be saved), and
 - run one of the commands below (depending on which Linux distribution you prefer to work with and the image you pulled earlier).
 
-```dockerfile
+```powershell
 # Linux users:
 ## Ubuntu.22.10-powered image:
 docker run --rm -it -v $(pwd):/project ghcr.io/w-mohammed/repast-hpc:2.3.1-ubuntu22.10
@@ -50,7 +50,7 @@ Users can build any of the images from hosted dockerfiles:
 - navigate to the `docker-repast-hpc` folder, and 
 - of the two commands below, call the one that corresponds to the linux distribution in which you are interested.
 
-```dockerfile
+```powershell
 # Ubuntu.22.10-powered image:
 docker build --squash --tag repast-hpc ./alpine/
 # alpine3.16.2-powered image:
