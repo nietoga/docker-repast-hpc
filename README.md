@@ -62,9 +62,9 @@ Users can build any of the images from hosted dockerfiles:
 
 `# Ubuntu.22.10-powered image:`
 ```powershell
-docker build --squash --tag repast-hpc ./alpine/
+docker build --tag repast-hpc ./ubuntu
 ```
 `# alpine3.16.2-powered image:`
 ```powershell
-docker build --squash --tag repast-hpc ./ubuntu
+docker build --tag repast-hpc ./alpine
 ```
