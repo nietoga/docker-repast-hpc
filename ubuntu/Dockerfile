@@ -10,12 +10,14 @@ FROM ubuntu:${UBUNTU_VERSION}
 
 # Declare image metadata:
 LABEL org.opencontainers.image.title="Repast for High Performance Computing (Repast HPC) 2.3.1 docker image"
+LABEL org.opencontainers.image.version="1.2"
 LABEL org.opencontainers.image.authors="Wael Mohammed <mrwaelmohammed@gmail.com>"
 LABEL org.opencontainers.image.url="https://github.com/W-Mohammed/docker-repast-hpc/pkgs/container/repast-hpc"
 LABEL org.opencontainers.image.source="https://github.com/W-Mohammed/docker-repast-hpc/ubuntu"
 LABEL org.opencontainers.image.base.name="https://hub.docker.com/layers/ubuntu/library/ubuntu/22.10/images/sha256-75d11da998393ed4a786917130c205967123f7ca8cddce2889fd9e3a0a69fcdd?context=explore"
 LABEL org.opencontainers.image.description="This image provides a Repast HPC development environment.\
-    The authors of this image adapted it from https://github.com/eze1981/repast-hpc/blob/master/Dockerfile"
+    The authors of this image adapted it from https://github.com/eze1981/repast-hpc/blob/master/Dockerfile.\
+    This image preserves build-essential."
 
 # Install system dependencies:
 RUN apt update -y && \
