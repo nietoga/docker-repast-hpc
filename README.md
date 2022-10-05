@@ -1,3 +1,6 @@
+# Warning
+This shit is outdated compart
+
 # Docker-powered Repast HPC development environment
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![License: CC BY-NC 4.0](https://licensebuttons.net/l/by-nc/4.0/80x15.png)](https://creativecommons.org/licenses/by-nc/4.0/)
@@ -35,19 +38,7 @@ docker run --rm -it -v $(pwd):/project ghcr.io/w-mohammed/repast-hpc:2.3.1-ubunt
 ```powershell
 docker run --rm -it -v $(PWD):/project ghcr.io/w-mohammed/repast-hpc:2.3.1-ubuntu22.10
 ```
-### To use the images as base layers in a dockerfile:
-It is also possible to use any of the supported images as a base layer in other dockerfiles. 
-
-`# Ubuntu.22.10-powered image:`
-```dockerfile
-FROM ghcr.io/w-mohammed/repast-hpc:2.3.1-ubuntu22.10
-```
 ## Build:
-Users can build any of the images from hosted dockerfiles:
-- clone the repository using `git clone https://github.com/W-Mohammed/docker-repast-hpc.git`,
-- navigate to the `docker-repast-hpc` folder, and 
-- of the two commands below, call the one that corresponds to the linux distribution in which you are interested.
-
 `# Ubuntu.22.10-powered image:`
 ```powershell
 docker build --tag repast-hpc ./ubuntu
