@@ -50,13 +50,6 @@ RUN ./install.sh mpich && \
 # Install repast hpc:
 RUN ./install.sh rhpc
 
-# Pass the libraries directories to ld
-RUN ldconfig /root/sfw/boost-1_61_0/lib \
-             /root/sfw/repast_hpc-2.3.1/lib \
-             /root/sfw/netcdf-4.2.1.1/lib \
-             /root/sfw/netcdf-cxx-4.2/lib \
-             /root/sfw/MPICH/lib
-
 # Remove unneeded files:
 WORKDIR /
 RUN rm -rf tmp
