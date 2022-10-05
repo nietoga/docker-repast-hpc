@@ -42,11 +42,11 @@ docker run --rm -it -v $(pwd):/project ghcr.io/w-mohammed/repast-hpc:2.3.1-alpin
 #### Windows users (PowerShell):
 `# Ubuntu.22.10-powered image:`
 ```powershell
-docker run --rm -it -v $(PWD):/project ghcr.io/w-mohammed/repast-hpc:2.3.1-ubuntu22.10
+docker run --rm -it -v ${PWD}:/project ghcr.io/w-mohammed/repast-hpc:2.3.1-ubuntu22.10
 ```
 `# alpine3.16.2-powered image:`
 ```powershell
-docker run --rm -it -v $(PWD):/project ghcr.io/w-mohammed/repast-hpc:2.3.1-alpine3.16.2
+docker run --rm -it -v ${PWD}:/project ghcr.io/w-mohammed/repast-hpc:2.3.1-alpine3.16.2
 ```
 
 ### To use the images as base layers in a dockerfile:
