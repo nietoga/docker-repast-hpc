@@ -50,10 +50,6 @@ RUN ./install.sh mpich && \
 # Install repast hpc:
 RUN ./install.sh rhpc
 
-# Remove unneeded packages:
-RUN apt remove -y build-essential && \
-    apt autoremove -y
-
 # Remove unneeded files:
 WORKDIR /
 RUN rm -rf tmp
