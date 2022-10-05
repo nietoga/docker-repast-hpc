@@ -1,5 +1,8 @@
 # Warning
-This shit is outdated compart
+
+This repo doesn't have as many things as the main one. I just wanted to preserve autorship of W-Mohammed.
+
+**This one is only for setup purposes of a testing instance of Repast with some fixes and tutorials**
 
 # Docker-powered Repast HPC development environment
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
