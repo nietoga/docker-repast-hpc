@@ -6,11 +6,11 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/W-Mohammed/docker-repast-hpc?style=plastic)
 [![GitHub forks](https://img.shields.io/github/forks/W-Mohammed/docker-repast-hpc?style=social&label=Fork&maxAge=2592000)](https://GitHub.com/W-Mohammed/docker-repast-hpc/network/)
 
-## [Introduction](#introduction)
-## [Usage](#usage)
-## [Build](#build)
-## [Contact](#contact)
-## [Changelog](#changelog)
+- **[Introduction](#introduction)**
+- **[Usage](#usage)**
+- **[Build](#build)**
+- **[Contact](#contact)**
+- **[Changelog](#changelog)**
 
 ## Introduction:
 This repo contains the dockerfiles housing the instructions to generate docker-powered [Repast for High-Performance Computing](https://repast.github.io/repast_hpc.html) (**Repast HPC**) development environments.
