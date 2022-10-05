@@ -20,11 +20,6 @@ Make sure you have Docker Engine on your machine and run one of the following co
 ```powershell
 docker pull ghcr.io/w-mohammed/repast-hpc:2.3.1-ubuntu22.10
 ```
-`# alpine3.16.2-powered image:`
-```powershell
-docker pull ghcr.io/w-mohammed/repast-hpc:2.3.1-alpine3.16.2
-```
-
 ### To run the Repast HPC development environment mapping a working directory: 
 This image is primarily intended as a development environment that the user can employ to develop their Agent-Based Models (ABM)s. To get started with your development: 
 - navigate to your projects working directory (where your model files are or are to be saved), and
