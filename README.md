@@ -6,6 +6,11 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/W-Mohammed/docker-repast-hpc?style=plastic)
 [![GitHub forks](https://img.shields.io/github/forks/W-Mohammed/docker-repast-hpc?style=social&label=Fork&maxAge=2592000)](https://GitHub.com/W-Mohammed/docker-repast-hpc/network/)
 
+## [Introduction](#introduction)
+## [Usage](#usage)
+## [Build](#build)
+## [Contact](#contact)
+## [Changelog](#changelog)
 
 ## Introduction:
 This repo contains the dockerfiles housing the instructions to generate docker-powered [Repast for High-Performance Computing](https://repast.github.io/repast_hpc.html) (**Repast HPC**) development environments.
@@ -18,7 +23,7 @@ Make sure you have Docker Engine on your machine and run one of the following co
 
 `# Ubuntu.22.10-powered image:`
 ```powershell
-docker pull ghcr.io/w-mohammed/repast-hpc:2.3.1-ubuntu22.10
+docker pull ghcr.io/w-mohammed/repast-hpc:2.3.1-ubuntu22.10-v1.2
 ```
 `# alpine3.16.2-powered image:`
 ```powershell
@@ -33,20 +38,20 @@ This image is primarily intended as a development environment that the user can 
 #### Linux users:
 `# Ubuntu.22.10-powered image:`
 ```powershell
-docker run --rm -it -v $(pwd):/project ghcr.io/w-mohammed/repast-hpc:2.3.1-ubuntu22.10
+docker run --rm -it -v $(pwd):/project/mounted ghcr.io/w-mohammed/repast-hpc:2.3.1-ubuntu22.10-v1.2
 ```
 `# alpine3.16.2-powered image:`
 ```powershell
-docker run --rm -it -v $(pwd):/project ghcr.io/w-mohammed/repast-hpc:2.3.1-alpine3.16.2
+docker run --rm -it -v $(pwd):/project/mounted ghcr.io/w-mohammed/repast-hpc:2.3.1-alpine3.16.2
 ```
 #### Windows users (PowerShell):
 `# Ubuntu.22.10-powered image:`
 ```powershell
-docker run --rm -it -v ${PWD}:/project ghcr.io/w-mohammed/repast-hpc:2.3.1-ubuntu22.10
+docker run --rm -it -v ${PWD}:/project/mounted ghcr.io/w-mohammed/repast-hpc:2.3.1-ubuntu22.10-v1.2
 ```
 `# alpine3.16.2-powered image:`
 ```powershell
-docker run --rm -it -v ${PWD}:/project ghcr.io/w-mohammed/repast-hpc:2.3.1-alpine3.16.2
+docker run --rm -it -v ${PWD}:/project/mounted ghcr.io/w-mohammed/repast-hpc:2.3.1-alpine3.16.2
 ```
 
 ### To use the images as base layers in a dockerfile:
@@ -54,7 +59,7 @@ It is also possible to use any of the supported images as a base layer in other 
 
 `# Ubuntu.22.10-powered image:`
 ```dockerfile
-FROM ghcr.io/w-mohammed/repast-hpc:2.3.1-ubuntu22.10
+FROM ghcr.io/w-mohammed/repast-hpc:2.3.1-ubuntu22.10-v1.2
 ```
 `# alpine3.16.2-powered image:`
 ```dockerfile
@@ -82,3 +87,10 @@ docker build --tag repast-hpc ./alpine
 *Public Health Economics and Decision Science, Wellcome Trust Doctoral Training Center, ScHARR, University of Sheffield, UK*
 
 Contact:   wmamohammed1@sheffield.ac.uk
+
+## Changelog:
+### `ubuntu`-based image [v.1.2] - 2022-10-05
+#### Removed:
+- The `ldconfig` command from the dockerfile.
+#### Added:
+- In the previous version `build-essential` was removed when building the docker image. However, since it could be useful to prospective users, it is now left in docker image and respective removal commands were omitted from the source dockerfile.
