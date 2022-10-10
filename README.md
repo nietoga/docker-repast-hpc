@@ -2,7 +2,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![License: CC BY-NC 4.0](https://licensebuttons.net/l/by-nc/4.0/80x15.png)](https://creativecommons.org/licenses/by-nc/4.0/)
 ![GitHub last commit](https://img.shields.io/github/last-commit/W-Mohammed/docker-repast-hpc?color=red&style=plastic)
-![GitHub downloads](https://img.shields.io//github/downloads/W-Mohammed/docker-repast-hpc/pkgs/container/repast-hpc/total)
+![GitHub downloads](https://img.shields.io/github/downloads/W-Mohammed/docker-repast-hpc/total?style=plastic)
 ![GitHub top language](https://img.shields.io/github/languages/top/W-Mohammed/docker-repast-hpc?style=plastic)
 ![GitHub repo size](https://img.shields.io/github/repo-size/W-Mohammed/docker-repast-hpc?style=plastic)
 [![GitHub forks](https://img.shields.io/github/forks/W-Mohammed/docker-repast-hpc?style=social&label=Fork&maxAge=2592000)](https://GitHub.com/W-Mohammed/docker-repast-hpc/network/)
