@@ -1,0 +1,59 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/workspace/libraries/**",
+                "${workspaceFolder}/workspace/libraries/repast_hpc-2.3.1/include/**",
+                "${workspaceFolder}/workspace/libraries/MPICH/include/**",
+                "${workspaceFolder}/workspace/libraries/boost-1_61_0/include/**",
+                "${workspaceFolder}/workspace/libraries/geos/include/**",
+                "${workspaceFolder}/workspace/libraries/netcdf-4.2.1.1/include/**",
+                "${workspaceFolder}/workspace/libraries/netcdf-cxx-4.2/include/**",
+                "${workspaceFolder}/workspace/libraries/repast_hpc-2.3.1/include/*",
+                "${workspaceFolder}/workspace/libraries/MPICH/include/*",
+                "${workspaceFolder}/workspace/libraries/boost-1_61_0/include/*",
+                "${workspaceFolder}/workspace/libraries/geos/include/*",
+                "${workspaceFolder}/workspace/libraries/netcdf-4.2.1.1/include/*",
+                "${workspaceFolder}/workspace/libraries/netcdf-cxx-4.2/include/*"
+            ],
+            "defines": [],
+            "macFrameworkPath": [
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+            ],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c17",
+            "cppStandard": "c++11",
+            "intelliSenseMode": "macos-clang-x64",
+            "configurationProvider": "ms-vscode.makefile-tools",
+            "mergeConfigurations": true,
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/workspace/libraries/**"
+                ]
+            }
+        },
+        {
+            "name": "RHPC",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [],
+            "macFrameworkPath": [
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+            ],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "intelliSenseMode": "macos-clang-x64",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/workspace/libraries/**",
+                    "${workspaceFolder}/workspace/libraries/MPICH/include/**"
+                ]
+            }
+        }
+    ],
+    "version": 4
+}
