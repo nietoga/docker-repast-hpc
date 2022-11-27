@@ -1,0 +1,7 @@
+#Properties file
+stop.at = 2
+count.of.humans=2
+count.of.infected.humans=1
+x.dim=32
+y.dim=32
+global.random.seed=20

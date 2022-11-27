@@ -1,0 +1,8 @@
+#Properties file
+stop.at = 2
+count.of.humans=2
+count.of.infected.humans=1
+x.dim=8
+y.dim=8
+random.seed=2
+#so that each run is the same
