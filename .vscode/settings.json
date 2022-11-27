@@ -1,3 +1,4 @@
 {
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "clang-format.executable": "/usr/local/bin/clang-format"
 }
