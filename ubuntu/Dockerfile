@@ -25,7 +25,8 @@ RUN apt update -y && \
         build-essential \
         zlib1g-dev \
         libgtest-dev \
-        curl
+        curl \
+        cmake
 
 # Repast HPC (rhpc):
 ## Declare the version of Repast HPC (rhpc) to be installed:
@@ -52,17 +53,37 @@ RUN ./install.sh mpich && \
 # Install repast hpc:
 RUN ./install.sh rhpc
 
+# GeoJSON:
+ARG GEOJSON_VERSION="3.11.1"
+
+WORKDIR /tmp/geojson
+
+RUN curl -O -L https://download.osgeo.org/geos/geos-${GEOJSON_VERSION}.tar.bz2 && \
+    tar xvfj geos-${GEOJSON_VERSION}.tar.bz2
+
+WORKDIR /tmp/geojson/geos-${GEOJSON_VERSION}/_build
+
+RUN cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr/local \
+        ..
+
+RUN make && \
+    ctest && \
+    make install
+
 # Remove unneeded files:
 WORKDIR /
-RUN rm -rf tmp
+RUN rm -rf tmp/*
 
 # Pass the libraries directories to ld
 RUN ldconfig /root/sfw/boost-1_61_0/lib \
-             /root/sfw/repast_hpc-2.3.1/lib \
+             /root/sfw/repast_hpc-${RHPC_VERSION}/lib \
              /root/sfw/netcdf-4.2.1.1/lib \
              /root/sfw/netcdf-cxx-4.2/lib \
-             /root/sfw/MPICH/lib
-             
+             /root/sfw/MPICH/lib \
+             /usr/local/lib
+
 # Setup a project file:
 ## Create the "project" folder as a working directory:
 WORKDIR /project
