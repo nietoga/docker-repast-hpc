@@ -24,3 +24,7 @@ Other flags:
 ```
 -l geos
 ```
+
+# Demos
+
+https://repast.github.io/hpc_tutorial/RepastHPC_Demos.html
