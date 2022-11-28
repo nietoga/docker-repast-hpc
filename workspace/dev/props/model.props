@@ -1,0 +1,4 @@
+# Properties file
+model.grid = bello_grid.geojson
+stop.at = 2
+count.of.agents = 100
