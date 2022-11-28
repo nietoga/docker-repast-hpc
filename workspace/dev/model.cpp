@@ -2,6 +2,7 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include <memory>
 
 #include <boost/mpi.hpp>
 #include <repast_hpc/AgentId.h>
@@ -22,18 +23,7 @@ DengueModel::DengueModel(std::string propsFile, int argc, char **argv, boost::mp
 	props = new repast::Properties(propsFile, argc, argv, comm);
 	stopAt = repast::strToInt(props->getProperty("stop.at"));
 	countOfAgents = repast::strToInt(props->getProperty("count.of.agents"));
-
-	std::string modelGridPath = props->getProperty("model.grid");
-
-	std::ifstream ifs(modelGridPath);
-	std::string content((std::istreambuf_iterator<char>(ifs)),
-						(std::istreambuf_iterator<char>()));
-
-	geos::io::GeoJSONReader reader;
-	geos::io::GeoJSONFeatureCollection fc = reader.readFeatures(content);
-
-	std::cout << modelGridPath << std::endl;
-
+	initPolygons();
 	initializeRandom(*props, comm);
 }
 
@@ -45,6 +35,28 @@ DengueModel::~DengueModel()
 void DengueModel::init()
 {
 	int rank = repast::RepastProcess::instance()->rank();
+}
+
+void DengueModel::initPolygons()
+{
+	std::string modelGridPath = props->getProperty("model.grid");
+
+	std::ifstream ifs(modelGridPath);
+	std::string content((std::istreambuf_iterator<char>(ifs)),
+						(std::istreambuf_iterator<char>()));
+
+	geos::io::GeoJSONReader reader;
+	geos::io::GeoJSONFeatureCollection fc = reader.readFeatures(content);
+
+	for (const auto &feature : fc.getFeatures())
+	{
+		auto geometry = feature.getGeometry();
+
+		if (geometry->getGeometryTypeId() == geos::geom::GeometryTypeId::GEOS_POLYGON)
+		{
+			polygons.push_back(geometry);
+		}
+	}
 }
 
 void DengueModel::initSchedule(repast::ScheduleRunner &runner)
