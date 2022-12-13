@@ -39,7 +39,7 @@ void RepastHPCDemoAgent::play(repast::SharedContext<RepastHPCDemoAgent>* context
         std::vector<int> otherLoc;
         space->getLocation((*agentToPlay)->getId(), otherLoc);
         repast::Point<int> otherPoint(otherLoc);
-        std::cout << " AGENT " << id_ << " AT " << center << " PLAYING " << ((*agentToPlay)->getId().currentRank() == id_.currentRank() ? "LOCAL" : "NON-LOCAL") << " AGENT " << (*agentToPlay)->getId() << " AT " << otherPoint << std::endl;
+        // std::cout << " AGENT " << id_ << " AT " << center << " PLAYING " << ((*agentToPlay)->getId().currentRank() == id_.currentRank() ? "LOCAL" : "NON-LOCAL") << " AGENT " << (*agentToPlay)->getId() << " AT " << otherPoint << std::endl;
         bool iCooperated = cooperate();                          // Do I cooperate?
         double payoff = (iCooperated ?
 						 ((*agentToPlay)->cooperate() ?  7 : 1) :     // If I cooperated, did my opponent?
@@ -67,7 +67,7 @@ void RepastHPCDemoAgent::move(repast::SharedDiscreteSpace<RepastHPCDemoAgent, re
         agentNewLoc.push_back(agentLoc[0] + (xRand < .33 ? -1 : (xRand < .66 ? 0 : 1)));
         agentNewLoc.push_back(agentLoc[1] + (yRand < .33 ? -1 : (yRand < .66 ? 0 : 1)));
         // Note: checking to see if agent would move outside GLOBAL bounds; exceeding local bounds is OK
-        if(!space->bounds().contains(agentNewLoc)) std::cout << " INVALID: " << agentNewLoc[0] << "," << agentNewLoc[1] << std::endl;
+        // if(!space->bounds().contains(agentNewLoc)) std::cout << " INVALID: " << agentNewLoc[0] << "," << agentNewLoc[1] << std::endl;
         
     }while(!space->bounds().contains(agentNewLoc));
     
@@ -82,3 +82,25 @@ RepastHPCDemoAgentPackage::RepastHPCDemoAgentPackage(){ }
 
 RepastHPCDemoAgentPackage::RepastHPCDemoAgentPackage(int _id, int _rank, int _type, int _currentRank, double _c, double _total):
 id(_id), rank(_rank), type(_type), currentRank(_currentRank), c(_c), total(_total){ }
+
+/**
+ * For some reason it doesn't work on Model.h
+ * Adding #include "repast_hpc/Moore2DGridQuery.h" to Model.cpp breaks it.
+ * error: 'Grid' does not name a type
+ */
+DataSource_GridCount::DataSource_GridCount(repast::SharedDiscreteSpace<RepastHPCDemoAgent, repast::StrictBorders, repast::SimpleAdder<RepastHPCDemoAgent> >* discreteSpace, int i, int j)
+ : discreteSpace(discreteSpace), i(i), j(j) { }
+
+int DataSource_GridCount::getData(){
+	repast::Point<int> center(i, j);
+
+    if (!discreteSpace->dimensions().contains(center)) {
+        return 0;
+    }
+
+	std::vector<RepastHPCDemoAgent*> agents;
+    repast::Moore2DGridQuery<RepastHPCDemoAgent> moore2DQuery(discreteSpace);
+    moore2DQuery.query(center, 0, true, agents);
+
+	return agents.size();
+}

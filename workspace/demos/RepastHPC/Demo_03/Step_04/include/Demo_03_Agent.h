@@ -4,6 +4,7 @@
 #define DEMO_03_AGENT
 
 #include "repast_hpc/AgentId.h"
+#include "repast_hpc/TDataSource.h"
 #include "repast_hpc/SharedContext.h"
 #include "repast_hpc/SharedDiscreteSpace.h"
 
@@ -70,5 +71,21 @@ public:
 	
 };
 
+
+/**
+ * For some reason it doesn't work on Model.h
+ * Adding #include "repast_hpc/Moore2DGridQuery.h" to Model.cpp breaks it.
+ * error: 'Grid' does not name a type
+ */
+class DataSource_GridCount : public repast::TDataSource<int>{
+private:
+    repast::SharedDiscreteSpace<RepastHPCDemoAgent, repast::StrictBorders, repast::SimpleAdder<RepastHPCDemoAgent> >* discreteSpace;
+	int i;
+	int j;
+
+public:
+	DataSource_GridCount(repast::SharedDiscreteSpace<RepastHPCDemoAgent, repast::StrictBorders, repast::SimpleAdder<RepastHPCDemoAgent> >* discreteSpace, int i, int j);
+	int getData();
+};
 
 #endif
