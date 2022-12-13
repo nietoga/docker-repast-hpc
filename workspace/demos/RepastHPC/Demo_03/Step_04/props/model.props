@@ -1,3 +1,8 @@
 #Properties file
-stop.at = 2
-count.of.agents = 100
+stop.at = 30
+count.of.agents = 10
+
+grid.lowx = -10
+grid.lowy = -10
+grid.highx = 20
+grid.highy = 20

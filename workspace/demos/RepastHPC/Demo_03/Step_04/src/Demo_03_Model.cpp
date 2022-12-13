@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <vector>
+#include <string>
 #include <boost/mpi.hpp>
 #include "repast_hpc/AgentId.h"
 #include "repast_hpc/RepastProcess.h"
@@ -77,13 +78,19 @@ RepastHPCDemoModel::RepastHPCDemoModel(std::string propsFile, int argc, char** a
 	props = new repast::Properties(propsFile, argc, argv, comm);
 	stopAt = repast::strToInt(props->getProperty("stop.at"));
 	countOfAgents = repast::strToInt(props->getProperty("count.of.agents"));
+
+	int lowX = repast::strToInt(props->getProperty("grid.lowx"));
+	int lowY = repast::strToInt(props->getProperty("grid.lowy"));
+	int highX = repast::strToInt(props->getProperty("grid.highx"));
+	int highY = repast::strToInt(props->getProperty("grid.highy"));
+
 	initializeRandom(*props, comm);
 	if(repast::RepastProcess::instance()->rank() == 0) props->writeToSVFile("./output/record.csv");
 	provider = new RepastHPCDemoAgentPackageProvider(&context);
 	receiver = new RepastHPCDemoAgentPackageReceiver(&context);
 	
-    repast::Point<double> origin(-100,-100);
-    repast::Point<double> extent(200, 200);
+    repast::Point<double> origin(lowX, lowY);
+    repast::Point<double> extent(highX, highY);
     
     repast::GridDimensions gd(origin, extent);
     
@@ -93,7 +100,7 @@ RepastHPCDemoModel::RepastHPCDemoModel(std::string propsFile, int argc, char** a
     
     discreteSpace = new repast::SharedDiscreteSpace<RepastHPCDemoAgent, repast::StrictBorders, repast::SimpleAdder<RepastHPCDemoAgent> >("AgentDiscreteSpace", gd, processDims, 5, comm);
 	
-    std::cout << "RANK " << repast::RepastProcess::instance()->rank() << " BOUNDS: " << discreteSpace->bounds().origin() << " " << discreteSpace->bounds().extents() << std::endl;
+    std::cout << "RANK " << repast::RepastProcess::instance()->rank() << " BOUNDS: " << discreteSpace->dimensions().origin() << " " << discreteSpace->dimensions().extents() << std::endl;
     
    	context.addProjection(discreteSpace);
     
@@ -108,6 +115,14 @@ RepastHPCDemoModel::RepastHPCDemoModel(std::string propsFile, int argc, char** a
 
 	DataSource_AgentCTotals* agentCTotals_DataSource = new DataSource_AgentCTotals(&context);
 	builder.addDataSource(createSVDataSource("C", agentCTotals_DataSource, std::plus<int>()));
+
+	for (int i = lowX; i <= highX; i++) {
+		for (int j = lowY; j <= highY; j++) {
+			std::string gridName = "Grid_X" + std::to_string(i) + "_Y" + std::to_string(j);
+			DataSource_GridCount* gridCount_DataSource = new DataSource_GridCount(discreteSpace, i, j);
+			builder.addDataSource(createSVDataSource(gridName, gridCount_DataSource, std::plus<int>()));
+		}
+	}
 
 	// Use the builder to create the data set
 	agentValues = builder.createDataSet();
@@ -156,7 +171,7 @@ void RepastHPCDemoModel::requestAgents(){
 
 void RepastHPCDemoModel::cancelAgentRequests(){
 	int rank = repast::RepastProcess::instance()->rank();
-	if(rank == 0) std::cout << "CANCELING AGENT REQUESTS" << std::endl;
+	// if(rank == 0) std::cout << "CANCELING AGENT REQUESTS" << std::endl;
 	repast::AgentRequest req(rank);
 	
 	repast::SharedContext<RepastHPCDemoAgent>::const_state_aware_iterator non_local_agents_iter  = context.begin(repast::SharedContext<RepastHPCDemoAgent>::NON_LOCAL);
@@ -178,7 +193,7 @@ void RepastHPCDemoModel::cancelAgentRequests(){
 
 void RepastHPCDemoModel::removeLocalAgents(){
 	int rank = repast::RepastProcess::instance()->rank();
-	if(rank == 0) std::cout << "REMOVING LOCAL AGENTS" << std::endl;
+	// if(rank == 0) std::cout << "REMOVING LOCAL AGENTS" << std::endl;
 	for(int i = 0; i < 5; i++){
 		repast::AgentId id(i, rank, 0);
 		repast::RepastProcess::instance()->agentRemoved(id);
@@ -190,10 +205,10 @@ void RepastHPCDemoModel::removeLocalAgents(){
 
 void RepastHPCDemoModel::doSomething(){
 	int whichRank = 0;
-	if(repast::RepastProcess::instance()->rank() == whichRank) std::cout << " TICK " << repast::RepastProcess::instance()->getScheduleRunner().currentTick() << std::endl;
+	// if(repast::RepastProcess::instance()->rank() == whichRank) std::cout << " TICK " << repast::RepastProcess::instance()->getScheduleRunner().currentTick() << std::endl;
 
 	if(repast::RepastProcess::instance()->rank() == whichRank){
-		std::cout << "LOCAL AGENTS:" << std::endl;
+		// std::cout << "LOCAL AGENTS:" << std::endl;
 		for(int r = 0; r < 4; r++){
 			for(int i = 0; i < 10; i++){
 				repast::AgentId toDisplay(i, r, 0);
@@ -202,12 +217,12 @@ void RepastHPCDemoModel::doSomething(){
                     std::vector<int> agentLoc;
                     discreteSpace->getLocation(agent->getId(), agentLoc);
                     repast::Point<int> agentLocation(agentLoc);
-                    std::cout << agent->getId() << " " << agent->getC() << " " << agent->getTotal() << " AT " << agentLocation << std::endl;
+                    // std::cout << agent->getId() << " " << agent->getC() << " " << agent->getTotal() << " AT " << agentLocation << std::endl;
                 }
 			}
 		}
 		
-		std::cout << "NON LOCAL AGENTS:" << std::endl;
+		// std::cout << "NON LOCAL AGENTS:" << std::endl;
 		for(int r = 0; r < 4; r++){
 			for(int i = 0; i < 10; i++){
 				repast::AgentId toDisplay(i, r, 0);
@@ -216,7 +231,7 @@ void RepastHPCDemoModel::doSomething(){
                     std::vector<int> agentLoc;
                     discreteSpace->getLocation(agent->getId(), agentLoc);
                     repast::Point<int> agentLocation(agentLoc);
-                    std::cout << agent->getId() << " " << agent->getC() << " " << agent->getTotal() << " AT " << agentLocation << std::endl;
+                    // std::cout << agent->getId() << " " << agent->getC() << " " << agent->getTotal() << " AT " << agentLocation << std::endl;
                 }
 			}
 		}
@@ -255,8 +270,8 @@ void RepastHPCDemoModel::initSchedule(repast::ScheduleRunner& runner){
 	runner.scheduleStop(stopAt);
 	
 	// Data collection
-	runner.scheduleEvent(1.5, 5, repast::Schedule::FunctorPtr(new repast::MethodFunctor<repast::DataSet>(agentValues, &repast::DataSet::record)));
-	runner.scheduleEvent(10.6, 10, repast::Schedule::FunctorPtr(new repast::MethodFunctor<repast::DataSet>(agentValues, &repast::DataSet::write)));
+	runner.scheduleEvent(1.5, 1, repast::Schedule::FunctorPtr(new repast::MethodFunctor<repast::DataSet>(agentValues, &repast::DataSet::record)));
+	// runner.scheduleEvent(10.6, 10, repast::Schedule::FunctorPtr(new repast::MethodFunctor<repast::DataSet>(agentValues, &repast::DataSet::write)));
 	runner.scheduleEndEvent(repast::Schedule::FunctorPtr(new repast::MethodFunctor<repast::DataSet>(agentValues, &repast::DataSet::write)));
 }
 
