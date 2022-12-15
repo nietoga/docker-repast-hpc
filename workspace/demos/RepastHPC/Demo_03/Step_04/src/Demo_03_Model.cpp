@@ -79,18 +79,18 @@ RepastHPCDemoModel::RepastHPCDemoModel(std::string propsFile, int argc, char** a
 	stopAt = repast::strToInt(props->getProperty("stop.at"));
 	countOfAgents = repast::strToInt(props->getProperty("count.of.agents"));
 
-	int lowX = repast::strToInt(props->getProperty("grid.lowx"));
-	int lowY = repast::strToInt(props->getProperty("grid.lowy"));
-	int highX = repast::strToInt(props->getProperty("grid.highx"));
-	int highY = repast::strToInt(props->getProperty("grid.highy"));
+	int originX = repast::strToInt(props->getProperty("grid.origin.x"));
+	int originY = repast::strToInt(props->getProperty("grid.origin.y"));
+	int extentX = repast::strToInt(props->getProperty("grid.extent.x"));
+	int extentY = repast::strToInt(props->getProperty("grid.extent.y"));
 
 	initializeRandom(*props, comm);
 	if(repast::RepastProcess::instance()->rank() == 0) props->writeToSVFile("./output/record.csv");
 	provider = new RepastHPCDemoAgentPackageProvider(&context);
 	receiver = new RepastHPCDemoAgentPackageReceiver(&context);
 	
-    repast::Point<double> origin(lowX, lowY);
-    repast::Point<double> extent(highX, highY);
+    repast::Point<double> origin(originX, originY);
+    repast::Point<double> extent(extentX, extentY);
     
     repast::GridDimensions gd(origin, extent);
     
@@ -116,8 +116,8 @@ RepastHPCDemoModel::RepastHPCDemoModel(std::string propsFile, int argc, char** a
 	DataSource_AgentCTotals* agentCTotals_DataSource = new DataSource_AgentCTotals(&context);
 	builder.addDataSource(createSVDataSource("C", agentCTotals_DataSource, std::plus<int>()));
 
-	for (int i = lowX; i <= highX; i++) {
-		for (int j = lowY; j <= highY; j++) {
+	for (int i = originX; i <= originX + extentX; i++) {
+		for (int j = originY; j <= originY + extentY; j++) {
 			std::string gridName = "Grid_X" + std::to_string(i) + "_Y" + std::to_string(j);
 			DataSource_GridCount* gridCount_DataSource = new DataSource_GridCount(discreteSpace, i, j);
 			builder.addDataSource(createSVDataSource(gridName, gridCount_DataSource, std::plus<int>()));
