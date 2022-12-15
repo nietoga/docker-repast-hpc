@@ -11,16 +11,16 @@ clean_output_files:
 .PHONY: clean_compiled_files
 clean_compiled_files:
 	rm -f ./bin/*.exe
-	rm -f ./object/*.o
+	rm -f ./objects/*.o
 
 ./bin/Demo_03.exe: ./objects/Demo_03_Main.o ./objects/Demo_03_Model.o ./objects/Demo_03_Agent.o
 	$(MPICXX) $(BOOST_LIB_DIR) $(REPAST_HPC_LIB_DIR) -o ./bin/Demo_03.exe  ./objects/Demo_03_Main.o ./objects/Demo_03_Model.o ./objects/Demo_03_Agent.o $(REPAST_HPC_LIB) $(BOOST_LIBS)
 
-./objects/Demo_03_Main.o: ./src/Demo_03_Main.cpp ./src/Demo_03_Model.h
+./objects/Demo_03_Main.o: ./src/Demo_03_Main.cpp
 	$(MPICXX) $(REPAST_HPC_DEFINES) $(BOOST_INCLUDE) $(REPAST_HPC_INCLUDE) -I./include -c ./src/Demo_03_Main.cpp -o ./objects/Demo_03_Main.o
 
-./objects/Demo_03_Model.o: ./src/Demo_03_Model.cpp ./src/Demo_03_Model.h
+./objects/Demo_03_Model.o: ./src/Demo_03_Model.cpp
 	$(MPICXX) $(REPAST_HPC_DEFINES) $(BOOST_INCLUDE) $(REPAST_HPC_INCLUDE) -I./include -c ./src/Demo_03_Model.cpp -o ./objects/Demo_03_Model.o
 
-./objects/Demo_03_Agent.o: ./src/Demo_03_Agent.cpp ./include/Demo_03_Agent.h
+./objects/Demo_03_Agent.o: ./src/Demo_03_Agent.cpp
 	$(MPICXX) $(REPAST_HPC_DEFINES) $(BOOST_INCLUDE) $(REPAST_HPC_INCLUDE) -I./include -c ./src/Demo_03_Agent.cpp -o ./objects/Demo_03_Agent.o
