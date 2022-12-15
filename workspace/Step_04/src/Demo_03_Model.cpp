@@ -53,6 +53,7 @@ RepastHPCDemoModel::RepastHPCDemoModel(std::string propsFile, int argc, char **a
 	props = new repast::Properties(propsFile, argc, argv, comm);
 	stopAt = repast::strToInt(props->getProperty("stop.at"));
 	countOfAgents = repast::strToInt(props->getProperty("count.of.agents"));
+	maxSiblings = repast::strToInt(props->getProperty("max.siblings"));
 
 	int originX = repast::strToInt(props->getProperty("grid.origin.x"));
 	int originY = repast::strToInt(props->getProperty("grid.origin.y"));
@@ -125,7 +126,7 @@ void RepastHPCDemoModel::init()
 		repast::AgentId id(rank * sliceSize + i, rank, 0);
 		id.currentRank(rank);
 
-		RepastHPCDemoAgent *agent = new RepastHPCDemoAgent(id, 3);
+		RepastHPCDemoAgent *agent = new RepastHPCDemoAgent(id, maxSiblings);
 		context.addAgent(agent);
 
 		double offsetX = repast::Random::instance()->nextDouble() * discreteSpace->dimensions().extents().getX();

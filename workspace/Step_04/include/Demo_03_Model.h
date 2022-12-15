@@ -49,6 +49,7 @@ class RepastHPCDemoModel
 {
 	int stopAt;
 	int countOfAgents;
+	int maxSiblings;
 	repast::Properties *props;
 	repast::SharedContext<RepastHPCDemoAgent> context;
 
