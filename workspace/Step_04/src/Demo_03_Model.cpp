@@ -47,36 +47,6 @@ void RepastHPCDemoAgentPackageReceiver::updateAgent(RepastHPCDemoAgentPackage pa
 	agent->set(package.currentRank, package.c, package.total);
 }
 
-DataSource_AgentTotals::DataSource_AgentTotals(repast::SharedContext<RepastHPCDemoAgent> *c) : context(c) {}
-
-int DataSource_AgentTotals::getData()
-{
-	int sum = 0;
-	repast::SharedContext<RepastHPCDemoAgent>::const_local_iterator iter = context->localBegin();
-	repast::SharedContext<RepastHPCDemoAgent>::const_local_iterator iterEnd = context->localEnd();
-	while (iter != iterEnd)
-	{
-		sum += (*iter)->getTotal();
-		iter++;
-	}
-	return sum;
-}
-
-DataSource_AgentCTotals::DataSource_AgentCTotals(repast::SharedContext<RepastHPCDemoAgent> *c) : context(c) {}
-
-int DataSource_AgentCTotals::getData()
-{
-	int sum = 0;
-	repast::SharedContext<RepastHPCDemoAgent>::const_local_iterator iter = context->localBegin();
-	repast::SharedContext<RepastHPCDemoAgent>::const_local_iterator iterEnd = context->localEnd();
-	while (iter != iterEnd)
-	{
-		sum += (*iter)->getC();
-		iter++;
-	}
-	return sum;
-}
-
 RepastHPCDemoModel::RepastHPCDemoModel(std::string propsFile, int argc, char **argv, boost::mpi::communicator *comm) : context(comm)
 {
 	props = new repast::Properties(propsFile, argc, argv, comm);
@@ -113,13 +83,6 @@ RepastHPCDemoModel::RepastHPCDemoModel(std::string propsFile, int argc, char **a
 	// Create the data set builder
 	std::string fileOutputName("./output/agent_total_data.csv");
 	repast::SVDataSetBuilder builder(fileOutputName.c_str(), ",", repast::RepastProcess::instance()->getScheduleRunner().schedule());
-
-	// Create the individual data sets to be added to the builder
-	DataSource_AgentTotals *agentTotals_DataSource = new DataSource_AgentTotals(&context);
-	builder.addDataSource(createSVDataSource("Total", agentTotals_DataSource, std::plus<int>()));
-
-	DataSource_AgentCTotals *agentCTotals_DataSource = new DataSource_AgentCTotals(&context);
-	builder.addDataSource(createSVDataSource("C", agentCTotals_DataSource, std::plus<int>()));
 
 	for (int i = originX; i <= originX + extentX; i++)
 	{

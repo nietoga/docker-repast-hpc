@@ -45,27 +45,6 @@ public:
 	void updateAgent(RepastHPCDemoAgentPackage package);
 };
 
-/* Data Collection */
-class DataSource_AgentTotals : public repast::TDataSource<int>
-{
-private:
-	repast::SharedContext<RepastHPCDemoAgent> *context;
-
-public:
-	DataSource_AgentTotals(repast::SharedContext<RepastHPCDemoAgent> *c);
-	int getData();
-};
-
-class DataSource_AgentCTotals : public repast::TDataSource<int>
-{
-private:
-	repast::SharedContext<RepastHPCDemoAgent> *context;
-
-public:
-	DataSource_AgentCTotals(repast::SharedContext<RepastHPCDemoAgent> *c);
-	int getData();
-};
-
 class RepastHPCDemoModel
 {
 	int stopAt;
