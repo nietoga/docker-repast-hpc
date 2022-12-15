@@ -1,0 +1,8 @@
+#Properties file
+stop.at = 30
+count.of.agents = 10
+
+grid.origin.x = 0
+grid.origin.y = 0
+grid.extent.x = 100
+grid.extent.y = 100
