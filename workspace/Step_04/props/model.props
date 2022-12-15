@@ -1,8 +1,8 @@
 #Properties file
 stop.at = 30
-count.of.agents = 10
+count.of.agents = 48
 
 grid.origin.x = 0
 grid.origin.y = 0
-grid.extent.x = 100
-grid.extent.y = 100
+grid.extent.x = 4
+grid.extent.y = 4

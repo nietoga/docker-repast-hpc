@@ -8,41 +8,29 @@
 #include "repast_hpc/SharedContext.h"
 #include "repast_hpc/SharedDiscreteSpace.h"
 
-/* Agents */
 class RepastHPCDemoAgent
 {
 
 private:
-    repast::AgentId id_;
-    double c;
-    double total;
+    repast::AgentId id;
+    int maxSiblings;
 
 public:
-    RepastHPCDemoAgent(repast::AgentId id);
-    RepastHPCDemoAgent() {}
-    RepastHPCDemoAgent(repast::AgentId id, double newC, double newTotal);
+    RepastHPCDemoAgent(repast::AgentId id, int maxSiblings);
 
     ~RepastHPCDemoAgent();
 
-    /* Required Getters */
-    virtual repast::AgentId &getId() { return id_; }
-    virtual const repast::AgentId &getId() const { return id_; }
+    virtual repast::AgentId &getId() { return id; }
 
-    /* Getters specific to this kind of Agent */
-    double getC() { return c; }
-    double getTotal() { return total; }
+    virtual const repast::AgentId &getId() const { return id; }
 
-    /* Setter */
-    void set(int currentRank, double newC, double newTotal);
+    int getMaxSiblings() { return maxSiblings; }
 
-    /* Actions */
-    bool cooperate(); // Will indicate whether the agent cooperates or not; probability determined by = c / total
-    void play(repast::SharedContext<RepastHPCDemoAgent> *context,
-              repast::SharedDiscreteSpace<RepastHPCDemoAgent, repast::StrictBorders, repast::SimpleAdder<RepastHPCDemoAgent>> *space); // Choose three other agents from the given context and see if they cooperate or not
+    void setMaxSiblings(int maxSiblings) { this->maxSiblings = maxSiblings; }
+
     void move(repast::SharedDiscreteSpace<RepastHPCDemoAgent, repast::StrictBorders, repast::SimpleAdder<RepastHPCDemoAgent>> *space);
 };
 
-/* Serializable Agent Package */
 struct RepastHPCDemoAgentPackage
 {
 
@@ -51,14 +39,11 @@ public:
     int rank;
     int type;
     int currentRank;
-    double c;
-    double total;
+    int maxSiblings;
 
-    /* Constructors */
-    RepastHPCDemoAgentPackage(); // For serialization
-    RepastHPCDemoAgentPackage(int _id, int _rank, int _type, int _currentRank, double _c, double _total);
+    RepastHPCDemoAgentPackage();
+    RepastHPCDemoAgentPackage(int id, int rank, int type, int currentRank, int maxSiblings);
 
-    /* For archive packaging */
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version)
     {
@@ -66,8 +51,7 @@ public:
         ar &rank;
         ar &type;
         ar &currentRank;
-        ar &c;
-        ar &total;
+        ar &maxSiblings;
     }
 };
 

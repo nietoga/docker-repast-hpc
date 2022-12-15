@@ -19,7 +19,7 @@ RepastHPCDemoAgentPackageProvider::RepastHPCDemoAgentPackageProvider(repast::Sha
 void RepastHPCDemoAgentPackageProvider::providePackage(RepastHPCDemoAgent *agent, std::vector<RepastHPCDemoAgentPackage> &out)
 {
 	repast::AgentId id = agent->getId();
-	RepastHPCDemoAgentPackage package(id.id(), id.startingRank(), id.agentType(), id.currentRank(), agent->getC(), agent->getTotal());
+	RepastHPCDemoAgentPackage package(id.id(), id.startingRank(), id.agentType(), id.currentRank(), agent->getMaxSiblings());
 	out.push_back(package);
 }
 
@@ -37,14 +37,15 @@ RepastHPCDemoAgentPackageReceiver::RepastHPCDemoAgentPackageReceiver(repast::Sha
 RepastHPCDemoAgent *RepastHPCDemoAgentPackageReceiver::createAgent(RepastHPCDemoAgentPackage package)
 {
 	repast::AgentId id(package.id, package.rank, package.type, package.currentRank);
-	return new RepastHPCDemoAgent(id, package.c, package.total);
+	return new RepastHPCDemoAgent(id, package.maxSiblings);
 }
 
 void RepastHPCDemoAgentPackageReceiver::updateAgent(RepastHPCDemoAgentPackage package)
 {
 	repast::AgentId id(package.id, package.rank, package.type);
 	RepastHPCDemoAgent *agent = agents->getAgent(id);
-	agent->set(package.currentRank, package.c, package.total);
+	agent->getId().currentRank(package.currentRank);
+	agent->setMaxSiblings(package.maxSiblings);
 }
 
 RepastHPCDemoModel::RepastHPCDemoModel(std::string propsFile, int argc, char **argv, boost::mpi::communicator *comm) : context(comm)
@@ -84,9 +85,9 @@ RepastHPCDemoModel::RepastHPCDemoModel(std::string propsFile, int argc, char **a
 	std::string fileOutputName("./output/agent_total_data.csv");
 	repast::SVDataSetBuilder builder(fileOutputName.c_str(), ",", repast::RepastProcess::instance()->getScheduleRunner().schedule());
 
-	for (int i = originX; i <= originX + extentX; i++)
+	for (int i = originX; i < originX + extentX; i++)
 	{
-		for (int j = originY; j <= originY + extentY; j++)
+		for (int j = originY; j < originY + extentY; j++)
 		{
 			std::string gridName = "Grid_X" + std::to_string(i) + "_Y" + std::to_string(j);
 			DataSource_GridCount *gridCount_DataSource = new DataSource_GridCount(discreteSpace, i, j);
@@ -124,7 +125,7 @@ void RepastHPCDemoModel::init()
 		repast::AgentId id(rank * sliceSize + i, rank, 0);
 		id.currentRank(rank);
 
-		RepastHPCDemoAgent *agent = new RepastHPCDemoAgent(id);
+		RepastHPCDemoAgent *agent = new RepastHPCDemoAgent(id, 3);
 		context.addAgent(agent);
 
 		double offsetX = repast::Random::instance()->nextDouble() * discreteSpace->dimensions().extents().getX();
@@ -142,12 +143,6 @@ void RepastHPCDemoModel::doSomething()
 	std::vector<RepastHPCDemoAgent *> agents;
 	context.selectAgents(repast::SharedContext<RepastHPCDemoAgent>::LOCAL, countOfAgents, agents);
 	std::vector<RepastHPCDemoAgent *>::iterator it = agents.begin();
-
-	while (it != agents.end())
-	{
-		(*it)->play(&context, discreteSpace);
-		it++;
-	}
 
 	it = agents.begin();
 	while (it != agents.end())
