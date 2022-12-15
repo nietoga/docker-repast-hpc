@@ -60,6 +60,9 @@ RepastHPCDemoModel::RepastHPCDemoModel(std::string propsFile, int argc, char **a
 	int extentX = repast::strToInt(props->getProperty("grid.extent.x"));
 	int extentY = repast::strToInt(props->getProperty("grid.extent.y"));
 
+	int processDimsX = repast::strToInt(props->getProperty("process.dims.x"));
+	int processDimsY = repast::strToInt(props->getProperty("process.dims.y"));
+
 	initializeRandom(*props, comm);
 	if (repast::RepastProcess::instance()->rank() == 0)
 		props->writeToSVFile("./output/record.csv");
@@ -72,8 +75,8 @@ RepastHPCDemoModel::RepastHPCDemoModel(std::string propsFile, int argc, char **a
 	repast::GridDimensions gd(origin, extent);
 
 	std::vector<int> processDims;
-	processDims.push_back(2);
-	processDims.push_back(2);
+	processDims.push_back(processDimsX);
+	processDims.push_back(processDimsY);
 
 	discreteSpace = new repast::SharedDiscreteSpace<RepastHPCDemoAgent, repast::StrictBorders, repast::SimpleAdder<RepastHPCDemoAgent>>("AgentDiscreteSpace", gd, processDims, 5, comm);
 

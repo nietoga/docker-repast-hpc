@@ -7,3 +7,6 @@ grid.origin.x = 0
 grid.origin.y = 0
 grid.extent.x = 4
 grid.extent.y = 4
+
+process.dims.x = 1
+process.dims.y = 2
