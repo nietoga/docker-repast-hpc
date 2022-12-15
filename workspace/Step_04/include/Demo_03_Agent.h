@@ -8,84 +8,84 @@
 #include "repast_hpc/SharedContext.h"
 #include "repast_hpc/SharedDiscreteSpace.h"
 
-
 /* Agents */
-class RepastHPCDemoAgent{
-	
+class RepastHPCDemoAgent
+{
+
 private:
-    repast::AgentId   id_;
-    double              c;
-    double          total;
-	
+    repast::AgentId id_;
+    double c;
+    double total;
+
 public:
     RepastHPCDemoAgent(repast::AgentId id);
-	RepastHPCDemoAgent(){}
+    RepastHPCDemoAgent() {}
     RepastHPCDemoAgent(repast::AgentId id, double newC, double newTotal);
-	
+
     ~RepastHPCDemoAgent();
-	
+
     /* Required Getters */
-    virtual repast::AgentId& getId(){                   return id_;    }
-    virtual const repast::AgentId& getId() const {      return id_;    }
-	
+    virtual repast::AgentId &getId() { return id_; }
+    virtual const repast::AgentId &getId() const { return id_; }
+
     /* Getters specific to this kind of Agent */
-    double getC(){                                      return c;      }
-    double getTotal(){                                  return total;  }
-	
+    double getC() { return c; }
+    double getTotal() { return total; }
+
     /* Setter */
     void set(int currentRank, double newC, double newTotal);
-	
+
     /* Actions */
-    bool cooperate();                                                 // Will indicate whether the agent cooperates or not; probability determined by = c / total
-    void play(repast::SharedContext<RepastHPCDemoAgent>* context,
-              repast::SharedDiscreteSpace<RepastHPCDemoAgent, repast::StrictBorders, repast::SimpleAdder<RepastHPCDemoAgent> >* space);    // Choose three other agents from the given context and see if they cooperate or not
-    void move(repast::SharedDiscreteSpace<RepastHPCDemoAgent, repast::StrictBorders, repast::SimpleAdder<RepastHPCDemoAgent> >* space);
-    
+    bool cooperate(); // Will indicate whether the agent cooperates or not; probability determined by = c / total
+    void play(repast::SharedContext<RepastHPCDemoAgent> *context,
+              repast::SharedDiscreteSpace<RepastHPCDemoAgent, repast::StrictBorders, repast::SimpleAdder<RepastHPCDemoAgent>> *space); // Choose three other agents from the given context and see if they cooperate or not
+    void move(repast::SharedDiscreteSpace<RepastHPCDemoAgent, repast::StrictBorders, repast::SimpleAdder<RepastHPCDemoAgent>> *space);
 };
 
 /* Serializable Agent Package */
-struct RepastHPCDemoAgentPackage {
-	
+struct RepastHPCDemoAgentPackage
+{
+
 public:
-    int    id;
-    int    rank;
-    int    type;
-    int    currentRank;
+    int id;
+    int rank;
+    int type;
+    int currentRank;
     double c;
     double total;
-	
+
     /* Constructors */
     RepastHPCDemoAgentPackage(); // For serialization
     RepastHPCDemoAgentPackage(int _id, int _rank, int _type, int _currentRank, double _c, double _total);
-	
-    /* For archive packaging */
-    template<class Archive>
-    void serialize(Archive &ar, const unsigned int version){
-        ar & id;
-        ar & rank;
-        ar & type;
-        ar & currentRank;
-        ar & c;
-        ar & total;
-    }
-	
-};
 
+    /* For archive packaging */
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar &id;
+        ar &rank;
+        ar &type;
+        ar &currentRank;
+        ar &c;
+        ar &total;
+    }
+};
 
 /**
  * For some reason it doesn't work on Model.h
  * Adding #include "repast_hpc/Moore2DGridQuery.h" to Model.cpp breaks it.
  * error: 'Grid' does not name a type
  */
-class DataSource_GridCount : public repast::TDataSource<int>{
+class DataSource_GridCount : public repast::TDataSource<int>
+{
 private:
-    repast::SharedDiscreteSpace<RepastHPCDemoAgent, repast::StrictBorders, repast::SimpleAdder<RepastHPCDemoAgent> >* discreteSpace;
-	int i;
-	int j;
+    repast::SharedDiscreteSpace<RepastHPCDemoAgent, repast::StrictBorders, repast::SimpleAdder<RepastHPCDemoAgent>> *discreteSpace;
+    int i;
+    int j;
 
 public:
-	DataSource_GridCount(repast::SharedDiscreteSpace<RepastHPCDemoAgent, repast::StrictBorders, repast::SimpleAdder<RepastHPCDemoAgent> >* discreteSpace, int i, int j);
-	int getData();
+    DataSource_GridCount(repast::SharedDiscreteSpace<RepastHPCDemoAgent, repast::StrictBorders, repast::SimpleAdder<RepastHPCDemoAgent>> *discreteSpace, int i, int j);
+    int getData();
 };
 
 #endif
