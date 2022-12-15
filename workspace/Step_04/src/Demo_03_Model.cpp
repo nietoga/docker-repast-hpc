@@ -216,7 +216,6 @@ void RepastHPCDemoModel::recordResults()
 	{
 		props->putProperty("Result", "Passed");
 		std::vector<std::string> keyOrder;
-		keyOrder.push_back("RunNumber");
 		keyOrder.push_back("stop.at");
 		keyOrder.push_back("Result");
 		props->writeToSVFile("./output/results.csv", keyOrder);
