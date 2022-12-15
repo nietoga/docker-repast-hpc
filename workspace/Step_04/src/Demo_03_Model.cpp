@@ -146,14 +146,30 @@ RepastHPCDemoModel::~RepastHPCDemoModel()
 
 void RepastHPCDemoModel::init()
 {
+	int n = repast::RepastProcess::instance()->worldSize();
 	int rank = repast::RepastProcess::instance()->rank();
-	for (int i = 0; i < countOfAgents; i++)
+
+	int sliceSize = countOfAgents / n;
+
+	if (rank == 0)
 	{
-		repast::Point<int> initialLocation((int)discreteSpace->dimensions().origin().getX() + i, (int)discreteSpace->dimensions().origin().getY() + i);
-		repast::AgentId id(i, rank, 0);
+		sliceSize += countOfAgents % n;
+	}
+
+	for (int i = 0; i < sliceSize; i++)
+	{
+		repast::AgentId id(rank * sliceSize + i, rank, 0);
 		id.currentRank(rank);
+
 		RepastHPCDemoAgent *agent = new RepastHPCDemoAgent(id);
 		context.addAgent(agent);
+
+		double offsetX = repast::Random::instance()->nextDouble() * discreteSpace->dimensions().extents().getX();
+		double offsetY = repast::Random::instance()->nextDouble() * discreteSpace->dimensions().extents().getY();
+
+		int x = (int)(discreteSpace->dimensions().origin().getX() + offsetX);
+		int y = (int)(discreteSpace->dimensions().origin().getY() + offsetY);
+		repast::Point<int> initialLocation(x, y);
 		discreteSpace->moveTo(id, initialLocation);
 	}
 }
